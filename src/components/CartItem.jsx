@@ -2,7 +2,13 @@ import { useState } from "react";
 
 function CartItem() {
   const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Aloe Vera", price: 10, quantity: 1 },
+    {
+      id: 1,
+      name: "Aloe Vera",
+      price: 10,
+      quantity: 1,
+      image: "https://via.placeholder.com/100",
+    },
   ]);
 
   const increment = (id) => {
@@ -27,16 +33,14 @@ function CartItem() {
     );
   };
 
-  const calculateTotalCost = (item) => {
-    return item.price * item.quantity;
+  const deleteItem = (id) => {
+    setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
-  const calculateTotalAmount = () => {
-    return cartItems.reduce(
-      (total, item) => total + calculateTotalCost(item),
-      0
-    );
-  };
+  const calculateTotalCost = (item) => item.price * item.quantity;
+
+  const calculateTotalAmount = () =>
+    cartItems.reduce((total, item) => total + calculateTotalCost(item), 0);
 
   return (
     <div>
@@ -44,6 +48,7 @@ function CartItem() {
 
       {cartItems.map((item) => (
         <div key={item.id}>
+          <img src={item.image} alt={item.name} />
           <p>{item.name}</p>
           <p>Price: ${item.price}</p>
           <p>Quantity: {item.quantity}</p>
@@ -51,6 +56,7 @@ function CartItem() {
 
           <button onClick={() => decrement(item.id)}>-</button>
           <button onClick={() => increment(item.id)}>+</button>
+          <button onClick={() => deleteItem(item.id)}>Delete</button>
         </div>
       ))}
 
