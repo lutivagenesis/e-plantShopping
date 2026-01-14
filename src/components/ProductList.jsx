@@ -3,36 +3,31 @@ import { useState } from "react";
 function ProductList() {
   const [cart, setCart] = useState([]);
 
-  const plants = {
-    Indoor: [
-      {
-        id: 1,
-        name: "Aloe Vera",
-        price: 10,
-        image: "https://via.placeholder.com/100",
-      },
-      {
-        id: 2,
-        name: "Snake Plant",
-        price: 15,
-        image: "https://via.placeholder.com/100",
-      },
-    ],
-    Outdoor: [
-      {
-        id: 3,
-        name: "Rose Plant",
-        price: 12,
-        image: "https://via.placeholder.com/100",
-      },
-      {
-        id: 4,
-        name: "Bamboo",
-        price: 20,
-        image: "https://via.placeholder.com/100",
-      },
-    ],
-  };
+  // REQUIRED plantsArray
+  const plantsArray = [
+    {
+      category: "Indoor Plants",
+      plants: [
+        { id: 1, name: "Aloe Vera", price: 10, image: "https://via.placeholder.com/100" },
+        { id: 2, name: "Snake Plant", price: 15, image: "https://via.placeholder.com/100" },
+        { id: 3, name: "Peace Lily", price: 12, image: "https://via.placeholder.com/100" },
+        { id: 4, name: "Spider Plant", price: 8, image: "https://via.placeholder.com/100" },
+        { id: 5, name: "ZZ Plant", price: 18, image: "https://via.placeholder.com/100" },
+        { id: 6, name: "Pothos", price: 9, image: "https://via.placeholder.com/100" },
+      ],
+    },
+    {
+      category: "Outdoor Plants",
+      plants: [
+        { id: 7, name: "Rose", price: 20, image: "https://via.placeholder.com/100" },
+        { id: 8, name: "Bougainvillea", price: 25, image: "https://via.placeholder.com/100" },
+        { id: 9, name: "Hibiscus", price: 18, image: "https://via.placeholder.com/100" },
+        { id: 10, name: "Bamboo", price: 30, image: "https://via.placeholder.com/100" },
+        { id: 11, name: "Palm", price: 35, image: "https://via.placeholder.com/100" },
+        { id: 12, name: "Lavender", price: 22, image: "https://via.placeholder.com/100" },
+      ],
+    },
+  ];
 
   const addToCart = (plant) => {
     setCart([...cart, plant]);
@@ -46,12 +41,12 @@ function ProductList() {
         <p>Cart Items: {cart.length}</p>
       </nav>
 
-      {/* Categories */}
-      {Object.keys(plants).map((category) => (
-        <div key={category}>
-          <h3>{category} Plants</h3>
+      {/* Categories + Dynamic rendering */}
+      {plantsArray.map((group) => (
+        <div key={group.category}>
+          <h3>{group.category}</h3>
 
-          {plants[category].map((plant) => (
+          {group.plants.map((plant) => (
             <div key={plant.id}>
               <img src={plant.image} alt={plant.name} />
               <p>{plant.name}</p>
@@ -59,9 +54,11 @@ function ProductList() {
 
               <button
                 onClick={() => addToCart(plant)}
-                disabled={cart.includes(plant)}
+                disabled={cart.some((item) => item.id === plant.id)}
               >
-                {cart.includes(plant) ? "Added" : "Add to Cart"}
+                {cart.some((item) => item.id === plant.id)
+                  ? "Added"
+                  : "Add to Cart"}
               </button>
             </div>
           ))}
